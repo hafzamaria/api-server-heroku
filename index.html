@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Signup Form</h1>
+    <form onsubmit="signup(); return false">
+        <label for="fullname">Fullname</label>
+        <input type="text" id="fullname">
+        <br>
+        <br>
+        <label for="username">Username</label>
+        <input type="text" id="username">
+        <br>
+        <br>
+        <label for="passward">Passward</label>
+        <input type="password" id="passward">
+        <br>
+        <br>
+        <button type="submit" value="signup">signup</button>
+    </form>
+
+    <p id="message"></p>
+    <button onclick="getAllUsers()">Get All Users!</button>
+    <p id="allUserList"></p>
+
+    <script>
+        function signup() {
+            var fullname = document.querySelector("#fullname").value;
+            var username = document.querySelector("#username").value;
+            var passward = document.querySelector("#passward").value;
+
+            axios.post('https://social-media-server1.herokuapp.com/user', {
+                "fullname": fullname,
+                "username": username,
+                "passward": passward
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    document.querySelector("#message").innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+
+        }
+
+        function getAllUsers() {
+
+            axios.get('https://social-media-server1.herokuapp.com/user')
+                .then(function (response) {
+                    // handle success
+                    console.log(response.data);
+                    response.data.map(eachUser => {
+                        document.querySelector("#allUserList").innerHTML +=
+                            `<b>${eachUser.fullname} </b>${eachUser.username} ${eachUser.passward}<br>`
+    })
+  })
+      
+}
+    </script>
+</body>
+
+</html>
